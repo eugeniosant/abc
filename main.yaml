@@ -1,7 +1,6 @@
 ---
  - hosts: localhost
    become: yes
-     #   become_user: "{{ username }}"
    gather_facts: no
    tasks:
 
