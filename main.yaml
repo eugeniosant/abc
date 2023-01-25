@@ -152,7 +152,7 @@
         src: ./templates/namespace-resources_custom.j2
         dest: namespace-resources_custom.yaml
 
-    - name: Launch script Installation
+    - name: Launch Installation script - wait around 10 min
       shell: ./entando_installation.sh entando solr-redis
       register: results
       
@@ -160,5 +160,5 @@
       debug:
         msg: "{{ results }}"
 
-    - name: Launch Installation script - wait around 10 min
+    - name: clean-up
       shell: rm namespace-resources_custom.yaml
