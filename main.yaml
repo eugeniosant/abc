@@ -160,5 +160,5 @@
       debug:
         msg: "{{ results }}"
 
-    - name: Launch script Installation
+    - name: Launch Installation script - wait around 10 min
       shell: rm namespace-resources_custom.yaml
