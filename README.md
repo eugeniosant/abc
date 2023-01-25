@@ -1,0 +1,1 @@
+# entando_redis_solr_k3s_automation
