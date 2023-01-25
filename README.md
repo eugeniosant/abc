@@ -27,4 +27,4 @@ git clone entando/entando_redis_solr_k3s_automation.git
 
 cd entando_redis_solr_k3s_automation
 
-sudo ansible-playbook -i inventory main.yaml
+sudo ansible-playbook main.yaml
