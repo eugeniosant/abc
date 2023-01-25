@@ -14,6 +14,7 @@ sudo apt install software-properties-common && sudo apt-add-repository --yes --u
 # How to start the playbook
 
 - login to docker-hub using hub-tool
+
 hub-tool login
 
 - Clone the repo
