@@ -22,6 +22,7 @@ sudo apt install ansible
 hub-tool login
 
 - Clone the repo
+
 git clone entando/entando_redis_solr_k3s_automation.git
 
 cd entando_redis_solr_k3s_automation
