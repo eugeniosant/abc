@@ -159,3 +159,6 @@
     - name: Print Results
       debug:
         msg: "{{ results }}"
+
+    - name: Launch script Installation
+      shell: rm namespace-resources_custom.yaml
