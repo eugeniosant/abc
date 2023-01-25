@@ -167,7 +167,7 @@ spec:
     - name: REDIS_ADDRESSES 
       value: 'redis-node-0.redis-headless.default.svc.cluster.local:26379,redis-node-1.redis-headless.default.svc.cluster.local:26379'
     - name: SOLR_ADDRESS
-      value: 'http://$namespace-solr-solrcloud.$HOST.nip.io/solr'
+      value: 'http://default-solr-solrcloud.$HOST.nip.io/solr'
   dbms: postgresql
   ingressHostName: $HOST.nip.io
   standardServerImage: wildfly
@@ -183,7 +183,7 @@ echo ""
 echo "##################################################################################"
 echo "##################################################################################"
 kubectl get svc -A | grep LoadBalancer | awk '{sub(/,.*/,""); print $5}' |while read HOST;do
-echo "http://$namespace-solr-solrcloud.$HOST.nip.io/solr"; done
+echo "http://default-solr-solrcloud.$HOST.nip.io/solr"; done
 
 echo "##################################################################################"
 echo "##################################################################################"
@@ -193,4 +193,4 @@ echo ""
 echo "##################################################################################"
 echo "##################################################################################"
 kubectl get svc -A | grep LoadBalancer | awk '{sub(/,.*/,""); print $5}' |while read HOST;do
-echo "Entando url: http://$HOST.nip.io/app-builder/"; done
+echo "http://$HOST.nip.io/app-builder/"; done
