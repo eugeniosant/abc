@@ -5,9 +5,9 @@ Prerequisite:
   https://github.com/docker/hub-tool/releases
 
 - ansible
-  eg. on Ubuntu
-  sudo apt install software-properties-common
-  sudo apt-add-repository --yes --update ppa:ansible/ansible
+  eg. on Ubuntu /
+  sudo apt install software-properties-common /
+  sudo apt-add-repository --yes --update ppa:ansible/ansible /
   sudo apt install ansible
 
 - k3s or k3d
