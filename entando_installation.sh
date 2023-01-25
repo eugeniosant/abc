@@ -175,3 +175,22 @@ spec:
 
 sleep 200
 while [[ $(kubectl get pods -l entando.org/entando-resource-kind=EntandoPlugin -n $namespace -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 1 ; done
+echo "##################################################################################"
+echo "##################################################################################"
+echo ""
+echo "solr url"
+echo ""
+echo "##################################################################################"
+echo "##################################################################################"
+kubectl get svc -A | grep LoadBalancer | awk '{sub(/,.*/,""); print $5}' |while read HOST;do
+echo "http://$namespace-solr-solrcloud.$HOST.nip.io/solr"; done
+
+echo "##################################################################################"
+echo "##################################################################################"
+echo ""
+echo "Entando url"
+echo ""
+echo "##################################################################################"
+echo "##################################################################################"
+kubectl get svc -A | grep LoadBalancer | awk '{sub(/,.*/,""); print $5}' |while read HOST;do
+echo "Entando url: http://$HOST.nip.io/app-builder/"; done
