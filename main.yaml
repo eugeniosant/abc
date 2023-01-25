@@ -147,7 +147,7 @@
       debug:
         msg: "{{ ENTANDOCC }}"
 
-    - name: Generate cypress config file
+    - name: Generate namespace-resources.yaml with updated tags
       template:
         src: ./templates/namespace-resources_custom.j2
         dest: namespace-resources_custom.yaml
