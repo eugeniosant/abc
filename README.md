@@ -15,6 +15,8 @@ sudo apt install ansible
 
 - k3s or k3d
 
+- helm
+
 # How to start the playbook
 
 - login to docker-hub using hub-tool

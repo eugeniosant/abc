@@ -1,0 +1,21 @@
+---
+ - hosts: localhost
+   become: yes
+   gather_facts: no
+   tasks:
+
+    - name: Change permission to entando script
+      shell: chmod +x entando_installation.sh
+
+    - name: Generate namespace-resources.yaml with updated tags
+      template:
+        src: ./templates/namespace-resources_custom.j2
+        dest: namespace-resources_custom.yaml
+
+    - name: Launch Installation script - wait around 10 min
+      shell: ./entando_installation.sh {{ namespace }} {{ appname }} {{ entver }} {{ ingress }} 
+      register: results
+      
+    - name: Print Results
+      debug:
+        msg: "{{ results }}"
