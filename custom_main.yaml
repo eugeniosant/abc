@@ -4,13 +4,13 @@
    gather_facts: no
    tasks:
 
-    - name: Change permission to entando script
-      shell: chmod +x entando_installation.sh
-
-    - name: Generate namespace-resources.yaml with updated tags
+    - name: Copy installation script
       template:
-        src: ./templates/namespace-resources_custom.j2
-        dest: namespace-resources_custom.yaml
+        src: ./templates/entando_installation_custom.j2
+        dest: entando_installation_custom.sh
+
+    - name: Change permission to entando script
+      shell: chmod +x entando_installation_custom.sh
 
     - name: Launch Installation script - wait around 10 min
       shell: ./entando_installation.sh {{ namespace }} {{ appname }} {{ entver }} {{ ingress }} 
