@@ -4,35 +4,23 @@
 #
 #  This script install Entando application Redis and Solr on k3s/k3d
 #
-namespace=$1
-appname=$2
-entver=$3
-ingress=$4
-
-if [[ -z "$namespace" ]]; then
-        echo "Use "$(basename "$0")" NAMESPACE";
-        exit 1;
-fi
-if [[ -z "$appname" ]]; then
-        echo "Use "$(basename "$0")" APPNAME";
-        exit 1;
-fi
-if [[ -z "$entver" ]]; then
-        echo "Use "$(basename "$0")" ENTVER";
-        exit 1;
-fi
-if [[ -z "$ingress" ]]; then
-        echo "Use "$(basename "$0")" INGRESS";
-        exit 1;
-fi
-
+echo ""
+echo "##################################################################################"
+echo "##################################################################################"
+echo ""
+echo "Creating Namespace {{ namespace }}"
+echo ""
+echo "##################################################################################"
+echo "##################################################################################"
+sudo kubectl create namespace {{ namespace }}
+echo 5
 echo "##################################################################################"
 echo "##################################################################################"
 echo "Install Redis cluster"
 echo "##################################################################################"
 echo "##################################################################################"
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm install redis bitnami/redis --values values.yaml
+sudo helm install -n {{ namespace }} redis bitnami/redis --values values.yaml
 
 sleep 200
 echo "##################################################################################"
@@ -44,7 +32,7 @@ echo " Install helm repo and Solr Instances "
 echo "##################################################################################"
 echo "##################################################################################"
 helm repo add apache-solr https://solr.apache.org/charts
-helm repo update
+sudo helm repo update
 echo "##################################################################################"
 echo "##################################################################################"
 
@@ -53,14 +41,14 @@ echo "##########################################################################
 echo " Install the Solr & Zookeeper CRDs"
 echo "##################################################################################"
 echo "##################################################################################"
-kubectl create -f https://solr.apache.org/operator/downloads/crds/v0.5.0/all-with-dependencies.yaml
+sudo kubectl create -f https://solr.apache.org/operator/downloads/crds/v0.5.0/all-with-dependencies.yaml
 
 echo "##################################################################################"
 echo "##################################################################################"
 echo " Install the Solr operator and Zookeeper Operator"
 echo "##################################################################################"
 echo "##################################################################################"
-helm install solr-operator apache-solr/solr-operator --version 0.5.0
+sudo helm install -n {{ namespace }} solr-operator apache-solr/solr-operator --version 0.5.0
 echo "##################################################################################"
 echo "##################################################################################"
 
@@ -69,10 +57,11 @@ apiVersion: solr.apache.org/v1beta1
 kind: SolrCloud
 metadata:
   name: solr
+  namespace: {{ namespace }}
 spec:
   solrAddressability:
     external:
-      domainName: $ingress.nip.io
+      domainName: {{ ingress }}.nip.io
       method: Ingress
       useExternalAddress: true
   customSolrKubeOptions:
@@ -121,7 +110,7 @@ spec:
             memory: 500Mi
           requests:
             cpu: 250m
-            memory: 500Mi" | kubectl apply -f -
+            memory: 500Mi" | sudo kubectl apply -f -
 
 sleep 250
 echo "##################################################################################"
@@ -130,17 +119,7 @@ echo " Add entando document type on solr"
 echo "##################################################################################"
 echo "##################################################################################"
 
-curl "http://default-solr-solrcloud.$ingress.nip.io/solr/admin/collections?action=CREATE&name=entando&numShards=1&replicationFactor=3&maxShardsPerNode=2&collection.configName=_default"
-
-echo ""
-echo "##################################################################################"
-echo "##################################################################################"
-echo ""
-echo "Creating Namespace $namespace"
-echo ""
-echo "##################################################################################"
-echo "##################################################################################"
-kubectl create namespace $namespace
+curl "http://{{ namespace }}-solr-solrcloud.{{ ingress }}.nip.io/solr/admin/collections?action=CREATE&name=entando&numShards=1&replicationFactor=3&maxShardsPerNode=2&collection.configName=_default"
 
 echo ""
 echo "##################################################################################"
@@ -151,10 +130,9 @@ echo ""
 echo "##################################################################################"
 echo "##################################################################################"
 
-kubectl apply -f https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v$entver/manifests/k8s-116-and-later/namespace-scoped-deployment/cluster-resources.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v{{ entver }}/manifests/k8s-116-and-later/namespace-scoped-deployment/cluster-resources.yaml
 
-#kubectl apply -n $namespace -f https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v7.1.3/manifests/k8s-116-and-later/namespace-scoped-deployment/namespace-resources.yaml
-kubectl apply -n $namespace -f namespace-resources.yaml
+sudo kubectl apply -n {{ namespace }} -f namespace-resources.yaml
 echo "##################################################################################"
 echo "##################################################################################"
 echo ""
@@ -168,23 +146,23 @@ echo -e "
 apiVersion: entando.org/v1
 kind: EntandoApp
 metadata:
-  namespace: $namespace
-  name: $appname
+  namespace: {{ namespace }}
+  name: {{ appname }}
 spec:
   environmentVariables:
     - name: REDIS_ACTIVE 
       value: 'true'
     - name: REDIS_ADDRESSES 
-      value: 'redis-node-0.redis-headless.default.svc.cluster.local:26379,redis-node-1.redis-headless.default.svc.cluster.local:26379'
+      value: 'redis-node-0.redis-headless.{{ namespace }}.svc.cluster.local:26379,redis-node-1.redis-headless.{{ namespace }}.svc.cluster.local:26379'
     - name: SOLR_ADDRESS
-      value: 'http://default-solr-solrcloud.$ingress.nip.io/solr'
+      value: 'http://{{ namespace }}-solr-solrcloud.{{ ingress }}.nip.io/solr'
   dbms: postgresql
-  ingressHostName: $ingress.nip.io
+  ingressHostName: {{ ingress }}.nip.io
   standardServerImage: wildfly
-  replicas: 1" | kubectl apply -f -
+  replicas: 1" | sudo kubectl apply -f -
 
 sleep 200
-while [[ $(kubectl get pods -l entando.org/entando-resource-kind=EntandoPlugin -n $namespace -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 1 ; done
+while [[ $(sudo kubectl get pods -l entando.org/entando-resource-kind=EntandoPlugin -n {{ namespace }} -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 1 ; done
 echo "##################################################################################"
 echo "##################################################################################"
 echo ""
@@ -193,7 +171,7 @@ echo ""
 echo "##################################################################################"
 echo "##################################################################################"
 
-echo "http://default-solr-solrcloud.$ingress.nip.io/solr"
+echo "http://{{ namespace }}-solr-solrcloud.{{ ingress }}.nip.io/solr"
 
 echo "##################################################################################"
 echo "##################################################################################"
@@ -203,4 +181,4 @@ echo ""
 echo "##################################################################################"
 echo "##################################################################################"
 
-echo "http://$ingress.nip.io/app-builder/"
+echo "http://{{ ingress }}.nip.io/app-builder/"

@@ -13,9 +13,9 @@
       shell: chmod +x entando_installation_custom.sh
 
     - name: Launch Installation script - wait around 10 min
-      shell: ./entando_installation.sh {{ namespace }} {{ appname }} {{ entver }} {{ ingress }} 
+      shell: ./entando_installation_custom.sh
       register: results
-      
+
     - name: Print Results
       debug:
         msg: "{{ results }}"
