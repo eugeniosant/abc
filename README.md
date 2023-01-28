@@ -53,9 +53,13 @@ sudo apt install ansible
 
 - Download the namespace-resource file for a specific Entando version in the main project folder:
 
+  wget https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v{{ entando_version }}/manifests/k8s-116-and-later/namespace-scoped-deployment/namespace-resources.yaml
+  
   eg.
   wget https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v7.1.3/manifests/k8s-116-and-later/namespace-scoped-deployment/namespace-resources.yaml
 
+  modify images tags as required
+  
 - retrive the ingress ip-adress of you ingress controller
 
   eg.
