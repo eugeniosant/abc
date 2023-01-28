@@ -1,6 +1,6 @@
 # Playbook to run on k3s Entando Redi and Solr
 
-# Auto update entando images method
+## Auto update entando images method
 
 Prerequisite:
 - hub-tool
@@ -33,7 +33,7 @@ cd entando_redis_solr_k3s_automation
 
 sudo ansible-playbook main.yaml
 
-# Manual update entando images method
+## Manual update entando images method
 
 Prerequisite:
 
@@ -49,6 +49,7 @@ sudo apt install ansible
 - k3s or k3d
 
 - helm
+
 # How to start the playbook
 
 - Download the namespace-resource file for a specific Entando version in the main project folder:
@@ -59,7 +60,7 @@ sudo apt install ansible
   wget https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v7.1.3/manifests/k8s-116-and-later/namespace-scoped-deployment/namespace-resources.yaml
 
   modify images tags as required
-  
+
 - retrive the ingress ip-adress of you ingress controller
 
   eg.
