@@ -25,9 +25,9 @@
       amazon.aws.route53:
         state: 'present'
         zone: awsentando.net
-        record: "{{ HOST }}"
+        record: "*.{{ appname }}.awsentando.net"
         type: CNAME
-        value: 
+        value: "{{ HOST }}."
         ttl: 30
 
     - name: Sleep for 25 seconds and continue with play
