@@ -61,4 +61,4 @@ In this case I'm piking up the address 192.168.176.2 that I'm going to use later
 - Run the playook specifying the following variables
 
   eg.
-  ansible-playbook custom_main.yaml --extra-vars="namespace=entando appname=test_redis entver=7.1.3 ingress=192.178.176.2"
+  ansible-playbook custom_main.yaml --extra-vars="namespace=entando appname=test_redis entver=7.1.3 ingress=192.178.176.2 username=ubuntu"
