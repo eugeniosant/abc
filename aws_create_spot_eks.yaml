@@ -16,3 +16,20 @@
       register: HOST
     - set_fact:
        HOST: "{{ HOST.stdout }}"
+
+    - name: Sleep for 25 seconds and continue with play
+      wait_for:
+        timeout: 25
+
+    - name: Use a routing policy to distribute traffic
+      amazon.aws.route53:
+        state: 'present'
+        zone: awsentando.net
+        record: {{ HOST }}
+        type: CNAME
+        value: 
+        ttl: 30
+
+    - name: Sleep for 25 seconds and continue with play
+      wait_for:
+        timeout: 25
