@@ -54,6 +54,7 @@ sudo apt install ansible
   kubectl get svc -A |grep LoadBalancer
 
   user@home:~$ sudo kubectl get svc -A |grep LoadBalancer
+  
 kube-system   traefik  LoadBalancer   10.43.169.185   192.168.176.2,192.168.176.3   80:30264/TCP,443:32685/TCP 12m
 
 In this case I'm piking up the address 192.168.176.2 that I'm going to use later
