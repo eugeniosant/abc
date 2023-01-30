@@ -12,7 +12,7 @@
     - name: Change permission to entando script
       shell: chmod +x entando_installation_custom.sh
 
-    - name: Launch Installation script - wait around 10 min
+    - name: Launch Installation script - wait around 15 min
       shell: ./entando_installation_custom.sh
       register: results
 
