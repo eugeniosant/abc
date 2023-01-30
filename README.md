@@ -17,7 +17,7 @@ sudo apt install ansible
   
   mkdir /home/"user"/.kube
   
-  cp /etc/rancher/k3s/k3s.yaml /home/"user"/config
+  cp /etc/rancher/k3s/k3s.yaml /home/"user"/.kube/config
 
   Verify to be able to connect to the cluster as user
 
