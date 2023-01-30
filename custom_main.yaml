@@ -12,9 +12,6 @@
     - name: Change permission to entando script
       shell: chmod +x entando_installation_custom.sh
 
-    - name: Copy kubeconfig and export variables
-      shell: cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/k3s.yaml && chown ubuntu:ubuntu /home/ubuntu/.kube/k3s.yaml && export KUBECONFIG=/home/ubuntu/.kube/k3s.yaml
-
     - name: Launch Installation script - wait around 15 min
       shell: ./entando_installation_custom.sh
       register: results
