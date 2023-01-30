@@ -31,7 +31,7 @@
         zone: awsentando.net
         record: "*.{{ appname }}.awsentando.net"
         type: CNAME
-        value: "{{ HOST }}."
+        value: "{{ HOST }}"
         ttl: 30
 
     - name: Retrive KUBECONFIG
