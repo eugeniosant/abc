@@ -6,7 +6,7 @@
    tasks:
 
     - name: Create eks cluster
-      shell: chdir=/home/{{ username }}/bin  ./eksctl create cluster -r eu-central-1 --version={{ k_version}} --spot --instance-types=c3.large,c4.large,c5.large
+      shell: chdir=/home/{{ username }}/bin  ./eksctl create cluster -r eu-central-1 -n {{ namespace }} --version={{ k_version}} --spot --instance-types=c3.large,c4.large,c5.large
 
     - name: Install nginx controller
       shell: chdir=/home/{{ username }} kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.0/deploy/static/provider/cloud/deploy.yaml
