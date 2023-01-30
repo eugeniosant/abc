@@ -12,7 +12,7 @@
     - name: Install redis helm chart
       shell: |
          - helm repo add bitnami https://charts.bitnami.com/bitnami
-         - helm install -n entando redis bitnami/redis --values values.yaml
+         - helm install -n entando redis bitnami/redis --values values_aws.yaml
 
     - name: Install solr helm chart
       shell: |
