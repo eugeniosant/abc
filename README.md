@@ -20,6 +20,8 @@ sudo apt install ansible
   cp /etc/rancher/k3s/k3s.yaml /home/"user"/config
 
   Verify to be able to connect to the cluster as user
+
+  export KUBECONFIG=/home/"user"/.kube/config
   
   kubectl get nodes
 
