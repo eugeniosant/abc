@@ -25,7 +25,7 @@
       amazon.aws.route53:
         state: 'present'
         zone: awsentando.net
-        record: {{ HOST }}
+        record: "{{ HOST }}"
         type: CNAME
         value: 
         ttl: 30
