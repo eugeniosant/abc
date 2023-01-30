@@ -30,6 +30,14 @@
         value: "{{ HOST }}."
         ttl: 30
 
+    - name: Retrive kubeconfig
+      shell: cat /{{ username }}/.kube/config
+      register: KUBECONFIG
+
+    - name: Print KUBECONFIG
+      debug:
+        msg: "{{ KUBECONFIG }}"
+
     - name: Sleep for 25 seconds and continue with play
       wait_for:
         timeout: 25
