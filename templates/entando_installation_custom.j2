@@ -12,7 +12,7 @@ echo "Creating Namespace {{ namespace }}"
 echo ""
 echo "##################################################################################"
 echo "##################################################################################"
-sudo kubectl create namespace {{ namespace }}
+kubectl create namespace {{ namespace }}
 echo 5
 echo "##################################################################################"
 echo "##################################################################################"
@@ -20,7 +20,7 @@ echo "Install Redis cluster"
 echo "##################################################################################"
 echo "##################################################################################"
 helm repo add bitnami https://charts.bitnami.com/bitnami
-sudo helm install -n {{ namespace }} redis bitnami/redis --values values.yaml
+helm install -n {{ namespace }} redis bitnami/redis --values values.yaml
 
 sleep 200
 echo "##################################################################################"
@@ -32,7 +32,7 @@ echo " Install helm repo and Solr Instances "
 echo "##################################################################################"
 echo "##################################################################################"
 helm repo add apache-solr https://solr.apache.org/charts
-sudo helm repo update
+helm repo update
 echo "##################################################################################"
 echo "##################################################################################"
 
@@ -41,14 +41,14 @@ echo "##########################################################################
 echo " Install the Solr & Zookeeper CRDs"
 echo "##################################################################################"
 echo "##################################################################################"
-sudo kubectl create -f https://solr.apache.org/operator/downloads/crds/v0.5.0/all-with-dependencies.yaml
+kubectl create -f https://solr.apache.org/operator/downloads/crds/v0.5.0/all-with-dependencies.yaml
 
 echo "##################################################################################"
 echo "##################################################################################"
 echo " Install the Solr operator and Zookeeper Operator"
 echo "##################################################################################"
 echo "##################################################################################"
-sudo helm install -n {{ namespace }} solr-operator apache-solr/solr-operator --version 0.5.0
+helm install -n {{ namespace }} solr-operator apache-solr/solr-operator --version 0.5.0
 echo "##################################################################################"
 echo "##################################################################################"
 
@@ -110,7 +110,7 @@ spec:
             memory: 500Mi
           requests:
             cpu: 250m
-            memory: 500Mi" | sudo kubectl apply -f -
+            memory: 500Mi" | kubectl apply -f -
 
 sleep 100
 echo "##################################################################################"
@@ -130,9 +130,9 @@ echo ""
 echo "##################################################################################"
 echo "##################################################################################"
 
-sudo kubectl apply -f https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v{{ entver }}/manifests/k8s-116-and-later/namespace-scoped-deployment/cluster-resources.yaml
+kubectl apply -f https://raw.githubusercontent.com/entando-k8s/entando-k8s-operator-bundle/v{{ entver }}/manifests/k8s-116-and-later/namespace-scoped-deployment/cluster-resources.yaml
 
-sudo kubectl apply -n {{ namespace }} -f namespace-resources.yaml
+kubectl apply -n {{ namespace }} -f namespace-resources.yaml
 echo "##################################################################################"
 echo "##################################################################################"
 echo ""
@@ -159,10 +159,10 @@ spec:
   dbms: postgresql
   ingressHostName: {{ ingress }}.nip.io
   standardServerImage: wildfly
-  replicas: 1" | sudo kubectl apply -f -
+  replicas: 1" | kubectl apply -f -
 
 sleep 200
-while [[ $(sudo kubectl get pods -l entando.org/entando-resource-kind=EntandoPlugin -n {{ namespace }} -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 1 ; done
+while [[ $(kubectl get pods -l entando.org/entando-resource-kind=EntandoPlugin -n {{ namespace }} -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 1 ; done
 echo "##################################################################################"
 echo "##################################################################################"
 echo ""
