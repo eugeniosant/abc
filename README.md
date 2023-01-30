@@ -13,6 +13,16 @@ sudo apt install ansible
 
 - k3s or k3d
 
+  copy as sudoers kubeconfig file in the user home-dir
+  
+  mkdir /home/"user"/.kube
+  
+  cp /etc/rancher/k3s/k3s.yaml /home/"user"/config
+
+  Verify to be able to connect to the cluster as user
+  
+  kubectl get nodes
+
 - helm
 
   curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -39,7 +49,7 @@ sudo apt install ansible
 - retrive the ingress ip-adress of you ingress controller
 
   eg.
-  sudo kubectl get svc -A |grep LoadBalancer
+  kubectl get svc -A |grep LoadBalancer
 
   user@home:~$ sudo kubectl get svc -A |grep LoadBalancer
 kube-system   traefik  LoadBalancer   10.43.169.185   192.168.176.2,192.168.176.3   80:30264/TCP,443:32685/TCP 12m
@@ -49,4 +59,4 @@ In this case I'm piking up the address 192.168.176.2 that I'm going to use later
 - Run the playook specifying the following variables
 
   eg.
-  sudo ansible-playbook custom_main.yaml --extra-vars="namespace=entando appname=test_redis entver=7.1.3 ingress=192.178.176.2"
+  ansible-playbook custom_main.yaml --extra-vars="namespace=entando appname=test_redis entver=7.1.3 ingress=192.178.176.2"
