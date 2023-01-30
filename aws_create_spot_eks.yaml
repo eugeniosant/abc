@@ -4,7 +4,8 @@
    become_user: "{{ username }}"
    gather_facts: no
    environment:
-     PATH: '{{ lookup(''env'', ''PATH'') }}:/home/{{ username }}/.local/bin/aws-iam-authenticator'
+     - PATH: '{{ lookup(''env'', ''PATH'') }}:/home/{{ username }}/.local/bin/aws-iam-authenticator'
+     - PATH: '{{ lookup(''env'', ''PATH'') }}:/home/{{ username }}/.local/bin/aws'
    tasks:
 
     - name: Create eks cluster
